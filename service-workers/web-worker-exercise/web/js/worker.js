@@ -2,7 +2,18 @@
 
 var curFib = 0;
 
-// TODO
+self.onmessage = onMessage
+
+function onMessage(evt) {
+	getNextFib()
+}
+
+function getNextFib() {
+	var fibNum = fib(curFib)
+	self.postMessage({ idx: curFib, num: fibNum })
+	curFib++
+	getNextFib()
+}
 
 // **********************************
 
