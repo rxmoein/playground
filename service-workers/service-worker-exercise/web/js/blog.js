@@ -4,6 +4,11 @@
   var offlineIcon;
   var isOnline = "onLine" in navigator ? navigator.onLine : true;
   var isLoggedIn = /isLoggedIn=1/.test(document.cookie.toString() || "");
+  var usingSvc = "serviceWorker" in navigator;
+  var swRegistration;
+  var svcWorker;
+
+  initServiceWorker().catch(console.error);
 
   document.addEventListener("DOMContentLoaded", ready, false);
 
@@ -25,5 +30,23 @@
       offlineIcon.classList.remove("hidden");
       isOnline = false;
     });
+  }
+
+  async function initServiceWorker() {
+    swRegistration = await navigator.serviceWorker.register("/sw.js", {
+      updateViaCache: "none",
+    });
+
+    svcWorker =
+      swRegistration.installing ||
+      swRegistration.waiting ||
+      swRegistration.active;
+
+    navigator.serviceWorker.addEventListener(
+      "controllerchange",
+      function onController() {
+        svcWorker = navigator.serviceWorker.controller;
+      }
+    );
   }
 })();
