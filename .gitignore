@@ -1,2 +1,4 @@
 service-workers/service-worker-exercise/node_modules
 service-workers/web-worker-exercise/node_modules
+
+.DS_Store
